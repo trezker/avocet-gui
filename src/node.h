@@ -16,4 +16,8 @@ struct Node_ops {
 
 Node* g_create_node();
 Node* g_destroy_node(Node* node);
+
 void g_render_node(Node* node);
+
+void g_set_node_ops(Node* node, Node_ops* ops);
+void g_set_node_rect(Node* node, Rect rect);

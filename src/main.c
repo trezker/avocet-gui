@@ -42,11 +42,13 @@ int main() {
 	Node_ops ops;
 	ops.render = render;
 	Node* menu = g_create_node();
-	menu->ops = &ops;
-	menu->rect.top = 100;
-	menu->rect.left = 50;
-	menu->rect.bottom = 150;
-	menu->rect.right = 200;
+	g_set_node_ops(menu, &ops);
+	Rect rect;
+	rect.top = 100;
+	rect.left = 50;
+	rect.bottom = 150;
+	rect.right = 200;
+	g_set_node_rect(menu, rect);
 
 	int done = 0;
 	while(!done) {
