@@ -5,7 +5,7 @@
 #include "node.h"
 
 void render(Node* node) {
-	al_draw_filled_rectangle(10, 10, 100, 50, al_map_rgb_f(1, 0, 0));	
+	al_draw_filled_rectangle(node->rect.left, node->rect.top, node->rect.right, node->rect.bottom, al_map_rgb_f(1, 0, 0));	
 }
 
 int main() {
@@ -43,6 +43,10 @@ int main() {
 	ops.render = render;
 	Node* menu = g_create_node();
 	menu->ops = &ops;
+	menu->rect.top = 100;
+	menu->rect.left = 50;
+	menu->rect.bottom = 150;
+	menu->rect.right = 200;
 
 	int done = 0;
 	while(!done) {
