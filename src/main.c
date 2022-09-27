@@ -2,7 +2,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "node.h"
+#include "g.h"
 
 void render(G_NODE* node) {
 	G_RECT rect = g_get_rect(node);
