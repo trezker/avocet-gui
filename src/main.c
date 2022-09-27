@@ -5,7 +5,8 @@
 #include "node.h"
 
 void render(Node* node) {
-	al_draw_filled_rectangle(node->rect.left, node->rect.top, node->rect.right, node->rect.bottom, al_map_rgb_f(1, 0, 0));	
+	Rect rect = g_get_rect(node);
+	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgb_f(1, 0, 0));	
 }
 
 int main() {

@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include "node.h"
 
+struct Node{
+	Rect rect;
+	Node_ops* ops;
+};
+
 Node* g_create_node() {
 	return malloc(sizeof(Node));
 }
@@ -24,4 +29,8 @@ void g_set_node_rect(Node* node, Rect rect) {
 	node->rect.left = 50;
 	node->rect.bottom = 150;
 	node->rect.right = 200;
+}
+
+Rect g_get_rect(Node* node) {
+	return node->rect;
 }
