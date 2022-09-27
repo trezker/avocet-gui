@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include "node.h"
 
+typedef struct {
+	Node* node;
+	char* name;
+	char* value;
+} Attribute;
+
+typedef struct {
+	Node* parent;
+	Node* child;
+} Child;
+
 struct Node{
 	Rect rect;
 	Node_ops* ops;
