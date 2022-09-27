@@ -2,17 +2,6 @@
 #include <stdlib.h>
 #include "node.h"
 
-typedef struct {
-	G_NODE* node;
-	char* name;
-	char* value;
-} Attribute;
-
-typedef struct {
-	G_NODE* parent;
-	G_NODE* child;
-} Child;
-
 struct G_NODE{
 	G_RECT rect;
 	G_NODE_OPS* ops;
