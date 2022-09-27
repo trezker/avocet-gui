@@ -4,8 +4,11 @@
 
 #include "node.h"
 
-int main() {
+void render(Node* node) {
+	al_draw_filled_rectangle(10, 10, 100, 50, al_map_rgb_f(1, 0, 0));	
+}
 
+int main() {
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_EVENT_QUEUE *queue;
 	ALLEGRO_EVENT event;
@@ -36,8 +39,10 @@ int main() {
 	ALLEGRO_COLOR white = al_map_rgb_f(1, 1, 1);
 
 
+	Node_ops ops;
+	ops.render = render;
 	Node* menu = g_create_node();
-
+	menu->ops = &ops;
 
 	int done = 0;
 	while(!done) {
@@ -51,11 +56,12 @@ int main() {
 
 		al_clear_to_color(black);
 
-
+		g_render_node(menu);
 
 		al_flip_display();
 	}
 
+	g_destroy_node(menu);
 	al_destroy_event_queue(queue);
 	return 0;
 }
