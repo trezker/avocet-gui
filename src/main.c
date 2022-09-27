@@ -4,8 +4,8 @@
 
 #include "node.h"
 
-void render(Node* node) {
-	Rect rect = g_get_rect(node);
+void render(G_NODE* node) {
+	G_RECT rect = g_get_rect(node);
 	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgb_f(1, 0, 0));	
 }
 
@@ -40,11 +40,11 @@ int main() {
 	ALLEGRO_COLOR white = al_map_rgb_f(1, 1, 1);
 
 
-	Node_ops ops;
+	G_NODE_OPS ops;
 	ops.render = render;
-	Node* menu = g_create_node();
+	G_NODE* menu = g_create_node();
 	g_set_node_ops(menu, &ops);
-	Rect rect;
+	G_RECT rect;
 	rect.top = 100;
 	rect.left = 50;
 	rect.bottom = 150;

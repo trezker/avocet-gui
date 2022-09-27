@@ -1,19 +1,19 @@
-typedef struct Node_ops Node_ops;
-typedef struct Node Node;
+typedef struct G_NODE_OPS G_NODE_OPS;
+typedef struct G_NODE G_NODE;
 
 typedef struct {
 	int top, left, bottom, right;
-} Rect;
+} G_RECT;
 
-struct Node_ops {
-	void (*render)(Node*);
+struct G_NODE_OPS {
+	void (*render)(G_NODE*);
 };
 
-Node* g_create_node();
-Node* g_destroy_node(Node* node);
+G_NODE* g_create_node();
+G_NODE* g_destroy_node(G_NODE* node);
 
-void g_render_node(Node* node);
+void g_render_node(G_NODE* node);
 
-void g_set_node_ops(Node* node, Node_ops* ops);
-void g_set_node_rect(Node* node, Rect rect);
-Rect g_get_rect(Node* node);
+void g_set_node_ops(G_NODE* node, G_NODE_OPS* ops);
+void g_set_node_rect(G_NODE* node, G_RECT rect);
+G_RECT g_get_rect(G_NODE* node);

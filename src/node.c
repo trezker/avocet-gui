@@ -3,45 +3,45 @@
 #include "node.h"
 
 typedef struct {
-	Node* node;
+	G_NODE* node;
 	char* name;
 	char* value;
 } Attribute;
 
 typedef struct {
-	Node* parent;
-	Node* child;
+	G_NODE* parent;
+	G_NODE* child;
 } Child;
 
-struct Node{
-	Rect rect;
-	Node_ops* ops;
+struct G_NODE{
+	G_RECT rect;
+	G_NODE_OPS* ops;
 };
 
-Node* g_create_node() {
-	return malloc(sizeof(Node));
+G_NODE* g_create_node() {
+	return malloc(sizeof(G_NODE));
 }
 
-Node* g_destroy_node(Node* node) {
+G_NODE* g_destroy_node(G_NODE* node) {
 	free(node);
 	return NULL;
 }
 
-void g_render_node(Node* node) {
+void g_render_node(G_NODE* node) {
 	node->ops->render(node);
 }
 
-void g_set_node_ops(Node* node, Node_ops* ops) {
+void g_set_node_ops(G_NODE* node, G_NODE_OPS* ops) {
 	node->ops = ops;
 }
 
-void g_set_node_rect(Node* node, Rect rect) {
+void g_set_node_rect(G_NODE* node, G_RECT rect) {
 	node->rect.top = 100;
 	node->rect.left = 50;
 	node->rect.bottom = 150;
 	node->rect.right = 200;
 }
 
-Rect g_get_rect(Node* node) {
+G_RECT g_get_rect(G_NODE* node) {
 	return node->rect;
 }
