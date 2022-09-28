@@ -4,7 +4,7 @@
 
 #include "g.h"
 
-void render(G_NODE* node) {
+void render(G_NODE node) {
 	G_RECT rect = g_get_rect(node);
 	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgb_f(1, 0, 0));	
 }
@@ -39,17 +39,28 @@ int main() {
 	ALLEGRO_COLOR black = al_map_rgb_f(0, 0, 0);
 	ALLEGRO_COLOR white = al_map_rgb_f(1, 1, 1);
 
+	g_init();
 
+	G_RECT rect;
 	G_NODE_OPS ops;
 	ops.render = render;
-	G_NODE* menu = g_create_node();
+	G_NODE menu = g_create_node(); //Pointer gets invalidated when nodes are reallocated
+	printf("menu %i\n", menu);
 	g_set_node_ops(menu, &ops);
-	G_RECT rect;
 	rect.top = 100;
 	rect.left = 50;
 	rect.bottom = 150;
 	rect.right = 200;
 	g_set_node_rect(menu, rect);
+
+	G_NODE menu2 = g_create_node();
+	printf("menu2 %i\n", menu2);
+	g_set_node_ops(menu2, &ops);
+	rect.top = 300;
+	rect.left = 250;
+	rect.bottom = 400;
+	rect.right = 500;
+	g_set_node_rect(menu2, rect);
 
 	int done = 0;
 	while(!done) {
@@ -64,11 +75,12 @@ int main() {
 		al_clear_to_color(black);
 
 		g_render_node(menu);
+		g_render_node(menu2);
 
 		al_flip_display();
 	}
 
-	g_destroy_node(menu);
+	g_shutdown();
 	al_destroy_event_queue(queue);
 	return 0;
 }
