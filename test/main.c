@@ -4,7 +4,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "g.h"
+#include "../src/g.h"
 
 ALLEGRO_FONT *font;
 
