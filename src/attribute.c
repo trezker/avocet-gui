@@ -32,16 +32,30 @@ void gi_shutdown_attribute() {
 }
 
 void g_set_attribute(G_NODE node, const char* name, const char* value) {
-	GI_ATTRIBUTE* a;
-	if(false) {//TODO: Find existing node+name combo
-	}
-	else {
-		if(count == allocated) {
-			allocated *= 2;
-			attributes = realloc(attributes, sizeof(GI_ATTRIBUTE)*allocated);
+	for(int i = 0; i<count; ++i) {
+		if(node == attributes[i].node && strcmp(name, attributes[i].name) == 0) {
+			free(attributes[i].value);
+			attributes[i].value = strdup(value);
+			return;
 		}
-		attributes[count].id = ++last_id;
-		a = &attributes[count++];
 	}
-	a->value = strdup(value);
+
+	if(count == allocated) {
+		allocated *= 2;
+		attributes = realloc(attributes, sizeof(GI_ATTRIBUTE)*allocated);
+	}
+	attributes[count].id = ++last_id;
+	attributes[count].node = node;
+	attributes[count].name = strdup(name);
+	attributes[count].value = strdup(value);
+	++count;
+}
+
+const char* g_get_attribute(G_NODE node, const char* name) {
+	for(int i = 0; i<count; ++i) {
+		if(node == attributes[i].node && strcmp(name, attributes[i].name) == 0) {
+			return attributes[i].value;
+		}
+	}
+	return NULL;
 }

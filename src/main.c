@@ -1,12 +1,21 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 
 #include "g.h"
 
+ALLEGRO_FONT *font;
+
 void render(G_NODE node) {
 	G_RECT rect = g_get_rect(node);
 	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgb_f(1, 0, 0));	
+	const char* text = g_get_attribute(node, "text");
+	if(text != NULL) {
+		ALLEGRO_COLOR white = al_map_rgb_f(1, 1, 1);
+		al_draw_text(font, white, rect.left, rect.top, 0, text);
+	}
 }
 
 int main() {
@@ -20,6 +29,8 @@ int main() {
 	}
 
 	al_init_primitives_addon();
+	al_init_font_addon();
+	al_init_ttf_addon();
 	al_install_mouse();
 	al_install_keyboard();
 
@@ -30,6 +41,8 @@ int main() {
 		printf("Error creating display\n");
 		return 0;
 	}
+
+	font = al_load_font("data/DejaVuSans.ttf", 12, 0);
 
 	queue = al_create_event_queue();
 	al_register_event_source(queue, al_get_mouse_event_source());
@@ -63,6 +76,8 @@ int main() {
 	g_set_node_rect(menu2, rect);
 
 	g_set_attribute(menu, "text", "Hello, world.");
+	g_set_attribute(menu2, "text", "Hello, you.");
+	g_set_attribute(menu, "text", "Hello, everybody.");
 
 	int done = 0;
 	while(!done) {
@@ -84,5 +99,6 @@ int main() {
 
 	g_shutdown();
 	al_destroy_event_queue(queue);
+	al_destroy_font(font);
 	return 0;
 }
