@@ -1,10 +1,10 @@
-void g_init_node();
-void g_shutdown_node();
+void gi_init_node();
+void gi_shutdown_node();
 
 void g_init() {
-	g_init_node();
+	gi_init_node();
 }
 
 void g_shutdown() {
-	g_shutdown_node();
+	gi_shutdown_node();
 }

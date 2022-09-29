@@ -14,7 +14,7 @@ int nodes_allocated;
 int node_count;
 G_NODE last_node_id;
 
-void g_init_node() {
+void gi_init_node() {
 	nodes = malloc(sizeof(GI_NODE));
 	nodes_allocated = 1;
 	node_count = 0;
@@ -22,7 +22,7 @@ void g_init_node() {
 	printf("init %p\n", nodes);
 }
 
-void g_shutdown_node() {
+void gi_shutdown_node() {
 	free(nodes);
 }
 
