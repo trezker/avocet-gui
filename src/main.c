@@ -62,6 +62,8 @@ int main() {
 	rect.right = 500;
 	g_set_node_rect(menu2, rect);
 
+	g_set_attribute(menu, "text", "Hello, world.");
+
 	int done = 0;
 	while(!done) {
 		while(al_get_next_event(queue, &event)) {
