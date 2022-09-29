@@ -3,4 +3,4 @@
 typedef struct {
 	G_NODE parent;
 	G_NODE child;
-} GI_CHILD;
+} GI_RELATION;
