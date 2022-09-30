@@ -12,9 +12,9 @@ typedef struct {
 } GI_ATTRIBUTE;
 
 GI_ATTRIBUTE* attributes;
-int allocated;
-int count;
-G_ATTRIBUTE last_id;
+static int allocated;
+static int count;
+static G_ATTRIBUTE last_id;
 
 void gi_init_attribute() {
 	attributes = malloc(sizeof(GI_ATTRIBUTE));
@@ -25,8 +25,8 @@ void gi_init_attribute() {
 
 void gi_shutdown_attribute() {
 	for(int i = 0; i < count; ++i) {
-		free(attributes[i].name);
-		free(attributes[i].value);
+		//free(attributes[i].name);
+		//free(attributes[i].value);
 	}
 	free(attributes);
 }

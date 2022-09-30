@@ -10,15 +10,15 @@ typedef struct {
 } GI_NODE;
 
 GI_NODE* nodes;
-int nodes_allocated;
-int node_count;
-G_NODE last_node_id;
+static int allocated;
+static int count;
+static G_NODE last_id;
 
 void gi_init_node() {
 	nodes = malloc(sizeof(GI_NODE));
-	nodes_allocated = 1;
-	node_count = 0;
-	last_node_id = 0;
+	allocated = 1;
+	count = 0;
+	last_id = 0;
 	printf("init %p\n", nodes);
 }
 
@@ -27,17 +27,17 @@ void gi_shutdown_node() {
 }
 
 G_NODE g_create_node() {
-	if(node_count == nodes_allocated) {
-		nodes_allocated *= 2;
-		nodes = realloc(nodes, sizeof(GI_NODE)*nodes_allocated);
+	if(count == allocated) {
+		allocated *= 2;
+		nodes = realloc(nodes, sizeof(GI_NODE)*allocated);
 		printf("realloc %p\n", nodes);
 	}
-	nodes[node_count++].id = ++last_node_id;
-	return last_node_id;
+	nodes[count++].id = ++last_id;
+	return last_id;
 }
 
 GI_NODE* gi_get_node(G_NODE id) {
-	for(int i = 0; i<node_count; ++i) {
+	for(int i = 0; i<count; ++i) {
 		if(nodes[i].id == id)
 			return &nodes[i];
 	}
@@ -45,7 +45,7 @@ GI_NODE* gi_get_node(G_NODE id) {
 }
 
 void g_destroy_node(G_NODE node) {
-	*gi_get_node(node) = nodes[--node_count];
+	*gi_get_node(node) = nodes[--count];
 }
 
 void g_render_node(G_NODE node) {

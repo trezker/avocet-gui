@@ -10,7 +10,10 @@ ALLEGRO_FONT *font;
 
 void render(G_NODE node) {
 	G_RECT rect = g_get_rect(node);
-	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgb_f(1, 0, 0));	
+	G_CLASS class = g_get_class(g_get_attribute(node, "class"));
+	G_COLOR bc = g_get_class_background_color(class);
+
+	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgba_f(bc.r, bc.g, bc.b, bc.a));
 	const char* text = g_get_attribute(node, "text");
 	if(text != NULL) {
 		ALLEGRO_COLOR white = al_map_rgb_f(1, 1, 1);
@@ -54,6 +57,10 @@ int main() {
 
 	g_init();
 
+	G_COLOR blue = {0, 0, 1, 1};
+	G_CLASS class = g_create_class("menu");
+	g_set_class_background_color(class, blue);
+
 	G_RECT rect;
 	G_NODE_OPS ops;
 	ops.render = render;
@@ -78,6 +85,8 @@ int main() {
 	g_set_attribute(menu, "text", "Hello, world.");
 	g_set_attribute(menu2, "text", "Hello, you.");
 	g_set_attribute(menu, "text", "Hello, everybody.");
+	g_set_attribute(menu, "class", "menu");
+	g_set_attribute(menu2, "class", "menu2");
 
 	int done = 0;
 	while(!done) {
