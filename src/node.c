@@ -19,7 +19,6 @@ void gi_init_node() {
 	allocated = 1;
 	count = 0;
 	last_id = 0;
-	printf("init %p\n", nodes);
 }
 
 void gi_shutdown_node() {
@@ -30,7 +29,6 @@ G_NODE g_create_node() {
 	if(count == allocated) {
 		allocated *= 2;
 		nodes = realloc(nodes, sizeof(GI_NODE)*allocated);
-		printf("realloc %p\n", nodes);
 	}
 	nodes[count++].id = ++last_id;
 	return last_id;

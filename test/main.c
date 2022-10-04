@@ -16,8 +16,24 @@ void render(G_NODE node) {
 	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, al_map_rgba_f(bc.r, bc.g, bc.b, bc.a));
 	const char* text = g_get_attribute(node, "text");
 	if(text != NULL) {
-		ALLEGRO_COLOR white = al_map_rgb_f(1, 1, 1);
+		ALLEGRO_COLOR white = al_map_rgb_f(0, 0, 0);
 		al_draw_text(font, white, rect.left, rect.top, 0, text);
+	}
+
+	int line_height = al_get_font_line_height(font);
+	int padding = 2;
+
+	G_RECT crect = {
+		rect.top + padding,
+		rect.left + padding,
+		rect.top + line_height + padding,
+		rect.right - padding
+	};
+	G_NODE child = g_get_child(node);
+
+	if(child > 0) {
+		g_set_node_rect(child, crect);
+		g_render_node(child);
 	}
 }
 
@@ -57,15 +73,17 @@ int main() {
 
 	g_init();
 
-	G_COLOR blue = {0, 0, 1, 1};
+	G_COLOR blue = {1, 1, 1, 1};
+	G_COLOR green = {0.7, 0.7, 0.7, 1};
 	G_CLASS class = g_create_class("menu");
 	g_set_class_background_color(class, blue);
+	G_CLASS class2 = g_create_class("option");
+	g_set_class_background_color(class2, green);
 
 	G_RECT rect;
 	G_NODE_OPS ops;
 	ops.render = render;
 	G_NODE menu = g_create_node(); //Pointer gets invalidated when nodes are reallocated
-	printf("menu %i\n", menu);
 	g_set_node_ops(menu, &ops);
 	rect.top = 100;
 	rect.left = 50;
@@ -73,20 +91,19 @@ int main() {
 	rect.right = 200;
 	g_set_node_rect(menu, rect);
 
-	G_NODE menu2 = g_create_node();
-	printf("menu2 %i\n", menu2);
-	g_set_node_ops(menu2, &ops);
+	G_NODE option = g_create_node();
+	g_set_node_ops(option, &ops);
 	rect.top = 300;
 	rect.left = 250;
 	rect.bottom = 400;
 	rect.right = 500;
-	g_set_node_rect(menu2, rect);
+	g_set_node_rect(option, rect);
 
-	g_set_attribute(menu, "text", "Hello, world.");
-	g_set_attribute(menu2, "text", "Hello, you.");
-	g_set_attribute(menu, "text", "Hello, everybody.");
+	g_set_attribute(option, "text", "Hello, you. ÖÄÅÉÀ");
 	g_set_attribute(menu, "class", "menu");
-	g_set_attribute(menu2, "class", "menu2");
+	g_set_attribute(option, "class", "option");
+
+	g_create_relation(menu, option);
 
 	int done = 0;
 	while(!done) {
@@ -101,7 +118,7 @@ int main() {
 		al_clear_to_color(black);
 
 		g_render_node(menu);
-		g_render_node(menu2);
+		//g_render_node(option);
 
 		al_flip_display();
 	}

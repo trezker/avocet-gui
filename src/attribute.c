@@ -25,8 +25,8 @@ void gi_init_attribute() {
 
 void gi_shutdown_attribute() {
 	for(int i = 0; i < count; ++i) {
-		//free(attributes[i].name);
-		//free(attributes[i].value);
+		free(attributes[i].name);
+		free(attributes[i].value);
 	}
 	free(attributes);
 }
