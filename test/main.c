@@ -17,10 +17,10 @@ void render(G_NODE node) {
 	const char* text = g_get_attribute(node, "text");
 	if(text != NULL) {
 		ALLEGRO_COLOR white = al_map_rgb_f(0, 0, 0);
-		al_draw_text(font, white, rect.left, rect.top, 0, text);
+		al_draw_text(font, white, rect.left, rect.top+1, 0, text);
 	}
 
-	int line_height = al_get_font_line_height(font);
+	int line_height = al_get_font_line_height(font)+2;
 	int padding = 2;
 
 	G_RECT crect = {
