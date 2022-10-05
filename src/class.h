@@ -19,3 +19,5 @@ void g_set_class_color(G_CLASS class, G_CLASS_COLOR color, G_COLOR value);
 G_COLOR g_get_class_color(G_CLASS class, G_CLASS_COLOR color);
 void g_set_class_padding(G_CLASS class, G_RECT padding);
 G_RECT g_get_class_padding(G_CLASS class);
+void g_set_class_margin(G_CLASS class, G_RECT margin);
+G_RECT g_get_class_margin(G_CLASS class);
