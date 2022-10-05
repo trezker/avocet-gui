@@ -23,13 +23,13 @@ void render(G_NODE node) {
 	}
 
 	int line_height = al_get_font_line_height(font)+2;
-	int padding = 2;
+	G_RECT padding = g_get_class_padding(class);
 
 	G_RECT crect = {
-		rect.top + padding,
-		rect.left + padding,
-		rect.top + line_height + padding,
-		rect.right - padding
+		rect.top + padding.top,
+		rect.left + padding.left,
+		rect.top + line_height + padding.top,
+		rect.right - padding.right
 	};
 	G_NODE child = g_get_child(node);
 
@@ -77,9 +77,11 @@ int main() {
 
 	G_CLASS class = g_create_class("menu");
 	g_set_class_color(class, G_BACKGROUND, (G_COLOR){1, 1, 1, 1});
+	g_set_class_padding(class, (G_RECT){2, 2, 2, 2});
 	G_CLASS class2 = g_create_class("option");
 	g_set_class_color(class2, G_BACKGROUND, (G_COLOR){0.7, 0.7, 0.7, 1});
 	g_set_class_color(class2, G_TEXT, (G_COLOR){0, 0, 0, 1});
+	g_set_class_padding(class2, (G_RECT){2, 2, 2, 2});
 
 	G_RECT rect;
 	G_NODE_OPS ops;

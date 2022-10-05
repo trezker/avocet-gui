@@ -7,6 +7,7 @@ typedef struct {
 	G_CLASS id;
 	char* name;
 	G_COLOR colors[G_NUM_CLASS_COLORS];
+	G_RECT padding;
 } GI_CLASS;
 
 GI_CLASS* classes;
@@ -65,4 +66,21 @@ G_COLOR g_get_class_color(G_CLASS class, G_CLASS_COLOR color) {
 		}
 	}
 	return (G_COLOR){1, 1, 1, 1};
+}
+
+void g_set_class_padding(G_CLASS class, G_RECT padding) {
+	for(int i = 0; i<count; ++i) {
+		if(classes[i].id == class) {
+			classes[i].padding = padding;
+		}
+	}
+}
+
+G_RECT g_get_class_padding(G_CLASS class) {
+	for(int i = 0; i<count; ++i) {
+		if(classes[i].id == class) {
+			return classes[i].padding;
+		}
+	}
+	return (G_RECT){0, 0, 0, 0};
 }

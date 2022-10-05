@@ -1,9 +1,7 @@
+#include "rect.h"
+
 typedef struct G_NODE_OPS G_NODE_OPS;
 typedef int G_NODE;
-
-typedef struct {
-	int top, left, bottom, right;
-} G_RECT;
 
 struct G_NODE_OPS {
 	void (*render)(G_NODE);
