@@ -25,6 +25,10 @@ void gi_shutdown_relation() {
 }
 
 G_RELATION g_create_relation(G_NODE parent, G_NODE child) {
+	if(parent <= 0 || child <= 0) {
+		return 0;
+	}
+
 	if(count == allocated) {
 		allocated *= 2;
 		relations = realloc(relations, sizeof(GI_RELATION)*allocated);
@@ -39,6 +43,19 @@ G_NODE g_get_child(G_NODE parent) {
 	for(int i = 0; i<count; ++i) {
 		if(relations[i].parent == parent) {
 			return relations[i].child;
+		}
+	}
+	return 0;
+}
+
+G_NODE g_get_next_sibling(G_NODE node) {
+	G_NODE parent = 0;
+	for(int i = 0; i<count; ++i) {
+		if(relations[i].parent == parent) {
+			return relations[i].child;
+		}
+		if(relations[i].child == node) {
+			parent = relations[i].parent;
 		}
 	}
 	return 0;

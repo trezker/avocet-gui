@@ -25,22 +25,24 @@ void render(G_NODE node) {
 
 	int line_height = al_get_font_line_height(font)+2;
 
+	int top = rect.top;
+	for(G_NODE child = g_get_child(node); child != 0; child = g_get_next_sibling(child)) {
+		G_CLASS child_class = g_get_class(g_get_attribute(child, "class"));
+		G_RECT child_padding = g_get_class_padding(child_class);
+		G_RECT child_margin = g_get_class_margin(child_class);
 
-	G_NODE child = g_get_child(node);
-	G_CLASS child_class = g_get_class(g_get_attribute(child, "class"));
-	G_RECT child_padding = g_get_class_padding(child_class);
-	G_RECT child_margin = g_get_class_margin(child_class);
+		G_RECT crect = {
+			top + padding.top + child_margin.top,
+			rect.left + padding.left + child_margin.left,
+			top + line_height + padding.top + child_padding.top + child_padding.bottom + child_margin.top,
+			rect.right - padding.right - child_margin.right
+		};
+		top = crect.bottom + child_margin.bottom;
 
-	G_RECT crect = {
-		rect.top + padding.top + child_margin.top,
-		rect.left + padding.left + child_margin.left,
-		rect.top + line_height + padding.top + child_padding.top + child_padding.bottom + child_margin.top,
-		rect.right - padding.right - child_margin.right
-	};
-
-	if(child > 0) {
-		g_set_node_rect(child, crect);
-		g_render_node(child);
+		if(child > 0) {
+			g_set_node_rect(child, crect);
+			g_render_node(child);
+		}
 	}
 }
 
@@ -96,17 +98,20 @@ int main() {
 	g_set_node_ops(menu, &ops);
 	rect.top = 100;
 	rect.left = 50;
-	rect.bottom = 150;
+	rect.bottom = 250;
 	rect.right = 200;
 	g_set_node_rect(menu, rect);
+	g_set_attribute(menu, "class", "menu");
 
 	G_NODE option = g_create_node();
 	g_set_node_ops(option, &ops);
-
-	g_set_attribute(menu, "class", "menu");
 	g_set_attribute(option, "class", "option");
 	g_set_attribute(option, "text", "Hello, you. ÖÄÅÉÀ");
-
+	g_create_relation(menu, option);
+	option = g_create_node();
+	g_set_node_ops(option, &ops);
+	g_set_attribute(option, "class", "option");
+	g_set_attribute(option, "text", "Next thing");
 	g_create_relation(menu, option);
 
 	int done = 0;
