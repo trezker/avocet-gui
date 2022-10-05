@@ -6,7 +6,7 @@
 typedef struct {
 	G_CLASS id;
 	char* name;
-	G_COLOR background;
+	G_COLOR colors[G_NUM_CLASS_COLORS];
 } GI_CLASS;
 
 GI_CLASS* classes;
@@ -50,18 +50,18 @@ G_CLASS g_get_class(const char* name) {
 	return 0;
 }
 
-void g_set_class_background_color(G_CLASS class, G_COLOR color) {
+void g_set_class_color(G_CLASS class, G_CLASS_COLOR color, G_COLOR value) {
 	for(int i = 0; i<count; ++i) {
 		if(classes[i].id == class) {
-			classes[i].background = color;
+			classes[i].colors[color] = value;
 		}
 	}
 }
 
-G_COLOR g_get_class_background_color(G_CLASS class) {
+G_COLOR g_get_class_color(G_CLASS class, G_CLASS_COLOR color) {
 	for(int i = 0; i<count; ++i) {
 		if(classes[i].id == class) {
-			return classes[i].background;
+			return classes[i].colors[color];
 		}
 	}
 	return (G_COLOR){1, 1, 1, 1};
