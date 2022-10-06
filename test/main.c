@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -7,6 +8,7 @@
 #include "../src/g.h"
 
 ALLEGRO_FONT *font;
+G_NODE hover;
 
 void render(G_NODE node) {
 	G_RECT rect = g_get_rect(node);
@@ -16,6 +18,17 @@ void render(G_NODE node) {
 	ALLEGRO_COLOR bg_color = al_map_rgba_f(gcolor.r, gcolor.g, gcolor.b, gcolor.a);
 	gcolor = g_get_class_color(class, G_TEXT);
 	ALLEGRO_COLOR text_color = al_map_rgba_f(gcolor.r, gcolor.g, gcolor.b, gcolor.a);
+
+	if(node == hover) {
+		char hc[80];
+		strncpy(hc, g_get_attribute(node, "class"), 79);
+		strncat(hc, ":hover", 79-strlen(hc));
+		class = g_get_class(hc);
+		if(class > 0) {
+			gcolor = g_get_class_color(class, G_BACKGROUND);
+			bg_color = al_map_rgba_f(gcolor.r, gcolor.g, gcolor.b, gcolor.a);
+		}
+	}
 
 	al_draw_filled_rectangle(rect.left, rect.top, rect.right, rect.bottom, bg_color);
 	const char* text = g_get_attribute(node, "text");
@@ -43,6 +56,19 @@ void render(G_NODE node) {
 			g_set_node_rect(child, crect);
 			g_render_node(child);
 		}
+	}
+}
+
+void find_node_at(G_NODE root, int x, int y) {
+	G_NODE current_node = root;
+	while(current_node > 0) {
+		G_RECT r = g_get_rect(current_node);
+		if(y > r.top && x > r.left && y < r.bottom && x < r.right) {
+			hover = current_node;
+			current_node = g_get_child(current_node);
+			continue;
+		}
+		current_node = g_get_next_sibling(current_node);
 	}
 }
 
@@ -86,10 +112,13 @@ int main() {
 	g_set_class_color(class, G_BACKGROUND, (G_COLOR){1, 1, 1, 1});
 	g_set_class_padding(class, (G_RECT){0, 0, 0, 0});
 	G_CLASS class2 = g_create_class("option");
-	g_set_class_color(class2, G_BACKGROUND, (G_COLOR){0.7, 0.7, 0.7, 1});
+	g_set_class_color(class2, G_BACKGROUND, (G_COLOR){0.9, 0.9, 0.9, 1});
 	g_set_class_color(class2, G_TEXT, (G_COLOR){0, 0, 0, 1});
 	g_set_class_padding(class2, (G_RECT){2, 2, 2, 2});
 	g_set_class_margin(class2, (G_RECT){2, 2, 2, 2});
+
+	G_CLASS class2_hover = g_create_class("option:hover");
+	g_set_class_color(class2_hover, G_BACKGROUND, (G_COLOR){0.7, 0.7, 0.7, 1});
 
 	G_RECT rect;
 	G_NODE_OPS ops;
@@ -114,12 +143,17 @@ int main() {
 	g_set_attribute(option, "text", "Next thing");
 	g_create_relation(menu, option);
 
+	hover = 0;
+
 	int done = 0;
 	while(!done) {
 		while(al_get_next_event(queue, &event)) {
 			switch(event.type) {
 				case ALLEGRO_EVENT_DISPLAY_CLOSE:
 					done = 1;
+					break;
+				case ALLEGRO_EVENT_MOUSE_AXES:
+					find_node_at(menu, event.mouse.x, event.mouse.y);
 					break;
 			}
 		}
