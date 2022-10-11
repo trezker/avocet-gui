@@ -12,20 +12,20 @@ G_NODE hover;
 
 void render(G_NODE node) {
 	G_RECT rect = g_get_rect(node);
-	G_CLASS class = g_get_class(g_get_attribute(node, "class"));
-	G_RECT padding = g_get_class_padding(class);
-	G_COLOR gcolor = g_get_class_color(class, G_BACKGROUND);
+	G_STYLE style = g_get_style(g_get_attribute(node, "style"));
+	G_RECT padding = g_get_style_padding(style);
+	G_COLOR gcolor = g_get_style_color(style, G_BACKGROUND);
 	ALLEGRO_COLOR bg_color = al_map_rgba_f(gcolor.r, gcolor.g, gcolor.b, gcolor.a);
-	gcolor = g_get_class_color(class, G_TEXT);
+	gcolor = g_get_style_color(style, G_TEXT);
 	ALLEGRO_COLOR text_color = al_map_rgba_f(gcolor.r, gcolor.g, gcolor.b, gcolor.a);
 
 	if(node == hover) {
 		char hc[80];
-		strncpy(hc, g_get_attribute(node, "class"), 79);
+		strncpy(hc, g_get_attribute(node, "style"), 79);
 		strncat(hc, ":hover", 79-strlen(hc));
-		class = g_get_class(hc);
-		if(class > 0) {
-			gcolor = g_get_class_color(class, G_BACKGROUND);
+		style = g_get_style(hc);
+		if(style > 0) {
+			gcolor = g_get_style_color(style, G_BACKGROUND);
 			bg_color = al_map_rgba_f(gcolor.r, gcolor.g, gcolor.b, gcolor.a);
 		}
 	}
@@ -40,9 +40,9 @@ void render(G_NODE node) {
 
 	int top = rect.top;
 	for(G_NODE child = g_get_child(node); child != 0; child = g_get_next_sibling(child)) {
-		G_CLASS child_class = g_get_class(g_get_attribute(child, "class"));
-		G_RECT child_padding = g_get_class_padding(child_class);
-		G_RECT child_margin = g_get_class_margin(child_class);
+		G_STYLE child_style = g_get_style(g_get_attribute(child, "style"));
+		G_RECT child_padding = g_get_style_padding(child_style);
+		G_RECT child_margin = g_get_style_margin(child_style);
 
 		G_RECT crect = {
 			top + padding.top + child_margin.top,
@@ -108,17 +108,17 @@ int main() {
 
 	g_init();
 
-	G_CLASS class = g_create_class("menu");
-	g_set_class_color(class, G_BACKGROUND, (G_COLOR){1, 1, 1, 1});
-	g_set_class_padding(class, (G_RECT){0, 0, 0, 0});
-	G_CLASS class2 = g_create_class("option");
-	g_set_class_color(class2, G_BACKGROUND, (G_COLOR){0.9, 0.9, 0.9, 1});
-	g_set_class_color(class2, G_TEXT, (G_COLOR){0, 0, 0, 1});
-	g_set_class_padding(class2, (G_RECT){2, 2, 2, 2});
-	g_set_class_margin(class2, (G_RECT){2, 2, 2, 2});
+	G_STYLE style = g_create_style("menu");
+	g_set_style_color(style, G_BACKGROUND, (G_COLOR){1, 1, 1, 1});
+	g_set_style_padding(style, (G_RECT){0, 0, 0, 0});
+	G_STYLE style2 = g_create_style("option");
+	g_set_style_color(style2, G_BACKGROUND, (G_COLOR){0.9, 0.9, 0.9, 1});
+	g_set_style_color(style2, G_TEXT, (G_COLOR){0, 0, 0, 1});
+	g_set_style_padding(style2, (G_RECT){2, 2, 2, 2});
+	g_set_style_margin(style2, (G_RECT){2, 2, 2, 2});
 
-	G_CLASS class2_hover = g_create_class("option:hover");
-	g_set_class_color(class2_hover, G_BACKGROUND, (G_COLOR){0.7, 0.7, 0.7, 1});
+	G_STYLE style2_hover = g_create_style("option:hover");
+	g_set_style_color(style2_hover, G_BACKGROUND, (G_COLOR){0.7, 0.7, 0.7, 1});
 
 	G_RECT rect;
 	G_NODE_OPS ops;
@@ -130,16 +130,16 @@ int main() {
 	rect.bottom = 250;
 	rect.right = 200;
 	g_set_node_rect(menu, rect);
-	g_set_attribute(menu, "class", "menu");
+	g_set_attribute(menu, "style", "menu");
 
 	G_NODE option = g_create_node();
 	g_set_node_ops(option, &ops);
-	g_set_attribute(option, "class", "option");
+	g_set_attribute(option, "style", "option");
 	g_set_attribute(option, "text", "Hello, you. ÖÄÅÉÀ");
 	g_create_relation(menu, option);
 	option = g_create_node();
 	g_set_node_ops(option, &ops);
-	g_set_attribute(option, "class", "option");
+	g_set_attribute(option, "style", "option");
 	g_set_attribute(option, "text", "Next thing");
 	g_create_relation(menu, option);
 
